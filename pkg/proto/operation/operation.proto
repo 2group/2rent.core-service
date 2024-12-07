@@ -1,0 +1,193 @@
+syntax = "proto3";
+
+package operation;
+
+option go_package = "2rent.operation.v1;operationv1";
+
+service OperationService {
+    rpc CreateAvailabilitySlot (CreateAvailabilitySlotRequest) returns (CreateAvailabilitySlotResponse);
+    rpc UpdateAvailabilitySlot (UpdateAvailabilitySlotRequest) returns (UpdateAvailabilitySlotResponse);
+    rpc ListAvailabilitySlots (ListAvailabilitySlotsRequest) returns (ListAvailabilitySlotsResponse);
+    rpc CreateBooking (CreateBookingRequest) returns (CreateBookingResponse);
+    rpc UpdateBooking (UpdateBookingRequest) returns (UpdateBookingResponse);
+    rpc ListBookings (ListBookingsRequest) returns (ListBookingsResponse);
+    rpc DeleteBooking (DeleteBookingRequest) returns (DeleteBookingResponse);
+    rpc CreateTransaction (CreateTransactionRequest) returns (CreateTransactionResponse);
+    rpc ListTransactions (ListTransactionsRequest) returns (ListTransactionsResponse);
+    rpc CreateChat (CreateChatRequest) returns (CreateChatResponse);
+    rpc ListChats (ListChatsRequest) returns (ListChatsResponse);
+    rpc CreateMonthlyPayout (CreateMonthlyPayoutRequest) returns (CreateMonthlyPayoutResponse);
+}
+
+message CreateAvailabilitySlotRequest {
+    string property_id = 1;
+    string start_time = 2;
+    string end_time = 3;
+    string status = 4;
+}
+
+message CreateAvailabilitySlotResponse {
+    AvailabilitySlot availability_slot = 1;
+}
+
+message UpdateAvailabilitySlotRequest {
+    string id = 1;
+    string property_id = 2;
+    string start_time = 3;
+    string end_time = 4;
+    string status = 5;
+}
+
+message UpdateAvailabilitySlotResponse {
+    AvailabilitySlot availability_slot = 1;
+}
+
+message ListAvailabilitySlotsRequest {
+    int32 page = 1;
+    int32 limit = 2;
+}
+
+message ListAvailabilitySlotsResponse {
+    repeated AvailabilitySlot availability_slots = 1;
+}
+
+message CreateBookingRequest {
+    string property_id = 1;
+    string user_id = 2;
+    string start_time = 3;
+    string end_time = 4;
+    string status = 5;
+    int32 total_price = 6;
+}
+
+message CreateBookingResponse {
+    Booking booking = 1;
+}
+
+message UpdateBookingRequest {
+    string id = 1;
+    string property_id = 2;
+    string user_id = 3;
+    string start_time = 4;
+    string end_time = 5;
+    string status = 6;
+    int32 total_price = 7;
+}
+
+message UpdateBookingResponse {
+    Booking booking = 1;
+}
+
+message ListBookingsRequest {
+    int32 page = 1;
+    int32 limit = 2;
+}
+
+message ListBookingsResponse {
+    repeated Booking bookings = 1;
+}
+
+message DeleteBookingRequest {
+    string booking_id = 1;
+}
+
+message DeleteBookingResponse {
+    bool success = 1;
+}
+
+message CreateTransactionRequest {
+    string user_id = 1;
+    int32 amount = 2;
+    string type = 3; // E.g., "credit", "debit"
+    string description = 4;
+}
+
+message CreateTransactionResponse {
+    Transaction transaction = 1;
+}
+
+message ListTransactionsRequest {
+    int32 page = 1;
+    int32 limit = 2;
+}
+
+message ListTransactionsResponse {
+    repeated Transaction transactions = 1;
+}
+
+message CreateChatRequest {
+    string related_booking_id = 1;
+    string related_property_id = 2;
+    string messages = 3; // JSON formatted message string
+}
+
+message CreateChatResponse {
+    Chat chat = 1;
+}
+
+message ListChatsRequest {
+    int32 page = 1;
+    int32 limit = 2;
+}
+
+message ListChatsResponse {
+    repeated Chat chats = 1;
+}
+
+message CreateMonthlyPayoutRequest {
+    string organization_id = 1;
+    string settlement_period_from = 2;
+    string settlement_period_to = 3;
+    int32 total_amount = 4;
+    string status = 5;
+    string payment_date = 6;
+}
+
+message CreateMonthlyPayoutResponse {
+    MonthlyPayout monthly_payout = 1;
+}
+
+message AvailabilitySlot {
+    string id = 1;
+    string property_id = 2;
+    string start_time = 3;
+    string end_time = 4;
+    string status = 5;
+}
+
+message Booking {
+    string id = 1;
+    string property_id = 2;
+    string user_id = 3;
+    string start_time = 4;
+    string end_time = 5;
+    string status = 6;
+    int32 total_price = 7;
+}
+
+message Transaction {
+    string id = 1;
+    string user_id = 2;
+    int32 amount = 3;
+    string type = 4;
+    string description = 5;
+    string created_at = 6;
+}
+
+message Chat {
+    string id = 1;
+    string related_booking_id = 2;
+    string related_property_id = 3;
+    string messages = 4;
+}
+
+message MonthlyPayout {
+    string id = 1;
+    string organization_id = 2;
+    string settlement_period_from = 3;
+    string settlement_period_to = 4;
+    int32 total_amount = 5;
+    string status = 6;
+    string payment_date = 7;
+}
+
