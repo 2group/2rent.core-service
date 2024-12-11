@@ -11,11 +11,18 @@ import (
 type Config struct {
 	Env  string     `yaml:"env" env-default:"local"`
 	REST RestConfig `yaml:"rest"`
+	GRPC GrpcConfig `yaml:"grpc"`
 }
 
 type RestConfig struct {
 	Port    int           `yaml:"port"`
 	Timeout time.Duration `yaml:"timeout"`
+}
+
+type GrpcConfig struct {
+	User         string `yaml:"user"`
+	Organization string `yaml:"organization"`
+	Operation    string `yaml:"operation"`
 }
 
 func MustLoad() *Config {

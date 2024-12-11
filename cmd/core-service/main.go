@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log/slog"
 	"os"
 
@@ -22,7 +21,7 @@ func main() {
 
 	log.Info("starting application")
 
-	application := app.NewAPIServer(fmt.Sprintf("localhost:%d", cfg.REST.Port), log)
+	application := app.NewAPIServer(cfg, log)
 
 	if err := application.Run(); err != nil {
 		panic(err)

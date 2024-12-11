@@ -9,10 +9,10 @@ import (
 )
 
 type UserHandler struct {
-	client *grpc.Client
+	client *grpc.UserClient
 }
 
-func NewUserHandler(client *grpc.Client) *UserHandler {
+func NewUserHandler(client *grpc.UserClient) *UserHandler {
 	return &UserHandler{client: client}
 }
 

@@ -9,17 +9,17 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-type Client struct {
+type UserClient struct {
 	Api userv1.UserServiceClient
 }
 
-func NewClient(ctx context.Context, addr string, timeout time.Duration, retriesCount int) (*Client, error) {
+func NewUserClient(ctx context.Context, addr string, timeout time.Duration, retriesCount int) (*UserClient, error) {
 	cc, err := grpc.DialContext(ctx, addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
 
-	return &Client{
+	return &UserClient{
 		Api: userv1.NewUserServiceClient(cc),
 	}, nil
 }

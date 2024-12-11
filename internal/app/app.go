@@ -2,10 +2,12 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"time"
 
+	"github.com/2group/2rent.core-service/internal/config"
 	"github.com/2group/2rent.core-service/internal/grpc"
 	"github.com/2group/2rent.core-service/internal/http/handler"
 	"github.com/go-chi/chi/v5"
@@ -13,12 +15,12 @@ import (
 )
 
 type APIServer struct {
-	address string
-	log     *slog.Logger
+	cfg *config.Config
+	log *slog.Logger
 }
 
-func NewAPIServer(address string, log *slog.Logger) *APIServer {
-	return &APIServer{address: address, log: log}
+func NewAPIServer(cfg *config.Config, log *slog.Logger) *APIServer {
+	return &APIServer{cfg: cfg, log: log}
 }
 
 func (s *APIServer) Run() error {
@@ -27,7 +29,7 @@ func (s *APIServer) Run() error {
 	router.Use(middleware.URLFormat)
 	context := context.Background()
 
-	client, err := grpc.NewClient(context, "localhost:50051", time.Hour*2, 2)
+	client, err := grpc.NewUserClient(context, s.cfg.GRPC.User, time.Hour*2, 2)
 	if err != nil {
 		panic(err)
 	}
@@ -40,5 +42,5 @@ func (s *APIServer) Run() error {
 		})
 	})
 
-	return http.ListenAndServe(s.address, router)
+	return http.ListenAndServe(fmt.Sprintf("localhost:%d", s.cfg.REST.Port), router)
 }
