@@ -1,0 +1,4 @@
+env: "local"
+rest:
+  port: 8080
+  timeout: 5s
