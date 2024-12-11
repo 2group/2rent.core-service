@@ -10,6 +10,7 @@ import (
 	"github.com/2group/2rent.core-service/internal/config"
 	"github.com/2group/2rent.core-service/internal/grpc"
 	"github.com/2group/2rent.core-service/internal/http/handler"
+	auth "github.com/2group/2rent.core-service/internal/http/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -40,6 +41,11 @@ func (s *APIServer) Run() error {
 		router.Route("/user", func(router chi.Router) {
 			router.Post("/login", userHandler.HandleLogin)
 			router.Post("/register", userHandler.HandleRegister)
+			router.Group(func(authenticatedRouter chi.Router) {
+				authenticatedRouter.Use(auth.AuthMiddleware)
+				authenticatedRouter.Get("/profile", userHandler.HandleGetProfile)
+				authenticatedRouter.Put("/profile", userHandler.HandleUpdateProfile)
+			})
 		})
 	})
 
