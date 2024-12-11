@@ -43,3 +43,31 @@ func (h *UserHandler) HandleRegister(w http.ResponseWriter, r *http.Request) {
 	json.WriteJSON(w, http.StatusOK, response)
 	return
 }
+
+func (h *UserHandler) HandleGetProfile(w http.ResponseWriter, r *http.Request) {
+	var req userv1.RegisterRequest
+	json.ParseJSON(r, &req)
+
+	response, err := h.client.Api.Register(r.Context(), &req)
+	if err != nil {
+		json.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	json.WriteJSON(w, http.StatusOK, response)
+	return
+}
+
+func (h *UserHandler) HandleUpdateProfile(w http.ResponseWriter, r *http.Request) {
+	var req userv1.RegisterRequest
+	json.ParseJSON(r, &req)
+
+	response, err := h.client.Api.Register(r.Context(), &req)
+	if err != nil {
+		json.WriteError(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	json.WriteJSON(w, http.StatusOK, response)
+	return
+}
