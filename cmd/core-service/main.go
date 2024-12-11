@@ -26,8 +26,6 @@ func main() {
 	if err := application.Run(); err != nil {
 		panic(err)
 	}
-
-	log.Info("application started")
 }
 
 func setupLogger(env string) *slog.Logger {

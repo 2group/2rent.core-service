@@ -13,8 +13,8 @@ var secret = "yourSigningKey"
 type contextKey string
 
 const (
-	UserIDKey          contextKey = "userID"
-	OrganizationIDKey  contextKey = "organizationID"
+	UserIDKey         contextKey = "uid"
+	OrganizationIDKey contextKey = "organizationID"
 )
 
 func AuthMiddleware(next http.Handler) http.Handler {
