@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package organization;
 
+import "google/protobuf/any.proto";
+
 option go_package = "2rent.organization.v1;organizationv1";
 
 service OrganizationService {
@@ -21,7 +23,7 @@ message CreateOrganizationRequest {
     string bin = 1;
     string type = 2;
     string name = 3;
-    string legal_address_id = 4;
+    Address legal_address = 4;
 }
 
 message CreateOrganizationResponse {
@@ -33,7 +35,7 @@ message UpdateOrganizationRequest {
     string bin = 2;
     string type = 3;
     string name = 4;
-    string legal_address_id = 5;
+    Address legal_address = 5;
 }
 
 message UpdateOrganizationResponse {
@@ -75,6 +77,8 @@ message CreateApartmentRequest {
     string location = 3;
     int32 price = 4;
     string availability = 5;
+    repeated ApartmentImage apartment_images = 6;
+    repeated ApartmentCharacteristic apartment_characteristics = 7;
 }
 
 message CreateApartmentResponse {
@@ -88,6 +92,8 @@ message UpdateApartmentRequest {
     string location = 4;
     int32 price = 5;
     string availability = 6;
+    repeated ApartmentImage apartment_images = 7;
+    repeated ApartmentCharacteristic apartment_characteristics = 8;
 }
 
 message UpdateApartmentResponse {
@@ -124,7 +130,7 @@ message Organization {
     string bin = 2;
     string type = 3;
     string name = 4;
-    string legal_address_id = 5;
+    Address legal_address = 5;
 }
 
 message OrganizationDoc {
@@ -142,5 +148,31 @@ message Apartment {
     string location = 4;
     int32 price = 5;
     string availability = 6;
+    repeated ApartmentImage apartment_images = 7;
+    repeated ApartmentCharacteristic apartment_characteristics = 8;
 }
 
+message ApartmentImage {
+    string id = 1;
+    string apartment_id = 2;
+    string image_url = 3;
+    int32 image_index = 4;
+}
+
+message ApartmentCharacteristic {
+    string id = 1;
+    string apartment_id = 2;
+    string name = 3;
+    string data_type = 4;
+    google.protobuf.Any value = 5;
+}
+
+message Address {
+    string id = 1;
+    string address_name = 2;
+    string type = 3;
+    string district = 4;
+    string city = 5;
+    double latitude = 6;
+    double longitude = 7;
+}
