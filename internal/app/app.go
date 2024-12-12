@@ -30,12 +30,18 @@ func (s *APIServer) Run() error {
 	router.Use(middleware.URLFormat)
 	context := context.Background()
 
-	client, err := grpc.NewUserClient(context, s.cfg.GRPC.User, time.Hour*2, 2)
+	userClient, err := grpc.NewUserClient(context, s.cfg.GRPC.User, time.Hour*2, 2)
 	if err != nil {
 		panic(err)
 	}
 
-	userHandler := handler.NewUserHandler(client)
+    organizationClient, err := grpc.NewOrganizationClient(context, s.cfg.GRPC.Organization, time.Hour*2, 2)
+	if err != nil {
+		panic(err)
+	}
+
+	userHandler := handler.NewUserHandler(userClient)
+    organizationHandler := handler.NewOrganizationHandler(organizationClient)
 
 	router.Route("/api/v1", func(router chi.Router) {
 		router.Route("/user", func(router chi.Router) {
@@ -45,6 +51,12 @@ func (s *APIServer) Run() error {
 				authenticatedRouter.Use(auth.AuthMiddleware)
 				authenticatedRouter.Get("/profile", userHandler.HandleGetProfile)
 				authenticatedRouter.Put("/profile", userHandler.HandleUpdateProfile)
+			})
+		})
+        router.Route("/organization", func(router chi.Router) {
+			router.Group(func(authenticatedRouter chi.Router) {
+				authenticatedRouter.Use(auth.AuthMiddleware)
+				authenticatedRouter.Post("/", organizationHandler.HanleCreateOrganization)
 			})
 		})
 	})
