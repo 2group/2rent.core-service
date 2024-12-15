@@ -24,8 +24,8 @@ message LoginResponse {
 }
 
 message RegisterRequest {
-    string email = 1;
-    string phone_number = 2;
+    optional string email = 1;
+    optional string phone_number = 2;
     string password = 3;
     string role = 4;
 }
@@ -38,14 +38,12 @@ message RegisterResponse {
 message UpdateUserRequest {
     string user_id = 1;
     string email = 2;
-    string password = 3;
-    string first_name = 4;
-    string last_name = 5;
-    string phone_number = 6;
-    string avatar_url = 7;
-    string role = 8;
-    bool verified = 9;
-    string organization_id = 10;
+    string first_name = 3;
+    string last_name = 4;
+    string phone_number = 5;
+    string avatar_url = 6;
+    bool verified = 7;
+    string organization_id = 8;
 }
 
 message UpdateUserResponse {
