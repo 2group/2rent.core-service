@@ -57,6 +57,8 @@ func (s *APIServer) Run() error {
 			router.Group(func(authenticatedRouter chi.Router) {
 				authenticatedRouter.Use(auth.AuthMiddleware)
 				authenticatedRouter.Post("/", organizationHandler.HanleCreateOrganization)
+				authenticatedRouter.Put("/", organizationHandler.HandleUpdateOrganization)
+				authenticatedRouter.Get("/", organizationHandler.HandleListOgranizations)
 			})
 		})
 	})
