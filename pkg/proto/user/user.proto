@@ -83,7 +83,7 @@ message DeleteUserResponse {
 
 message User {
     string id = 1;
-    string uin = 2;
+    string iin = 2;
     string email = 3;
     string password_hash = 4;
     string phone_number = 5;
