@@ -22,7 +22,7 @@ func NewUserHandler(client *grpc.UserClient) *UserHandler {
 func (h *UserHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 	var req userv1.LoginRequest
 	json.ParseJSON(r, &req)
-
+	log.Println("req: ", &req)
 	response, err := h.client.Api.Login(r.Context(), &req)
 	if err != nil {
 		json.WriteError(w, http.StatusInternalServerError, err)
