@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/wrappers.proto";
-
 package user;
 
 option go_package = "2rent.user.v1;userv1";
@@ -26,8 +24,8 @@ message LoginResponse {
 }
 
 message RegisterRequest {
-    optional google.protobuf.StringValue email = 1;
-    optional google.protobuf.StringValue phone_number = 2;
+    string email = 1;
+    string phone_number = 2;
     string password = 3;
     string role = 4;
 }
