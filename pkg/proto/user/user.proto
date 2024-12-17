@@ -42,7 +42,8 @@ message UpdateUserRequest {
     optional string last_name = 4;
     optional string phone_number = 5;
     optional string avatar_url = 6;
-    optional bool verified = 7;
+    optional string organization_id = 7;
+    optional bool verified = 8;
 }
 
 message UpdateUserResponse {
