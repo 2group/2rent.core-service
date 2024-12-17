@@ -12,18 +12,28 @@ service OrganizationService {
     rpc ListOrganizations (ListOrganizationsRequest) returns (ListOrganizationsResponse);
     rpc CreateOrganizationDoc (CreateOrganizationDocRequest) returns (CreateOrganizationDocResponse);
     rpc ListOrganizationDocs (ListOrganizationDocsRequest) returns (ListOrganizationDocsResponse);
-    rpc CreateApartment (CreateApartmentRequest) returns (CreateApartmentResponse);
-    rpc UpdateApartment (UpdateApartmentRequest) returns (UpdateApartmentResponse);
-    rpc DeleteApartment (DeleteApartmentRequest) returns (DeleteApartmentResponse);
-    rpc ListApartments (ListApartmentsRequest) returns (ListApartmentsResponse);
-    rpc ShowOrganizationApartments (ShowOrganizationApartmentsRequest) returns (ShowOrganizationApartmentsResponse);
+    rpc CreateProperty (CreatePropertyRequest) returns (CreatePropertyResponse);
+    rpc UpdateProperty (UpdatePropertyRequest) returns (UpdatePropertyResponse);
+    rpc DeleteProperty (DeletePropertyRequest) returns (DeletePropertyResponse);
+    rpc ListProperties (ListPropertiesRequest) returns (ListPropertiesResponse);
+    rpc ShowOrganizationProperties (ShowOrganizationPropertiesRequest) returns (ShowOrganizationPropertiesResponse);
+}
+
+message UpdatePropertyPricingRequest {
+    string property_id = 1;
+    repeated PricingRule pricing_rules = 2;
+    repeated AvailabilitySlot availability_slots = 3;
+}
+
+message UpdatePropertyPricingResponse {
+    bool success = 1;
 }
 
 message CreateOrganizationRequest {
     string bin = 1;
     string type = 2;
-    string name = 3;
-    Address legal_address = 4;
+    string legal_name = 3;
+    string legal_address = 4;
 }
 
 message CreateOrganizationResponse {
@@ -35,7 +45,7 @@ message UpdateOrganizationRequest {
     string bin = 2;
     string type = 3;
     string name = 4;
-    Address legal_address = 5;
+    string legal_address = 5;
 }
 
 message UpdateOrganizationResponse {
@@ -71,66 +81,68 @@ message ListOrganizationDocsResponse {
     repeated OrganizationDoc organization_docs = 1;
 }
 
-message CreateApartmentRequest {
+message CreatePropertyRequest {
     string organization_id = 1;
-    string apartment_name = 2;
+    string property_name = 2;
     string location = 3;
-    int32 price = 4;
+    repeated PricingRule pricing_rules = 4;
     string availability = 5;
-    repeated ApartmentImage apartment_images = 6;
-    repeated ApartmentCharacteristic apartment_characteristics = 7;
+    repeated PropertyImage property_images = 6;
+    repeated PropertyCharacteristic property_characteristics = 7;
 }
 
-message CreateApartmentResponse {
-    Apartment apartment = 1;
+message CreatePropertyResponse {
+    Property property = 1;
 }
 
-message UpdateApartmentRequest {
+message UpdatePropertyRequest {
     string id = 1;
     string organization_id = 2;
-    string apartment_name = 3;
+    string property_name = 3;
     string location = 4;
     int32 price = 5;
     string availability = 6;
-    repeated ApartmentImage apartment_images = 7;
-    repeated ApartmentCharacteristic apartment_characteristics = 8;
+    repeated PropertyImage property_images = 7;
+    repeated PropertyCharacteristic property_characteristics = 8;
 }
 
-message UpdateApartmentResponse {
-    Apartment apartment = 1;
+message UpdatePropertyResponse {
+    Property property = 1;
 }
 
-message DeleteApartmentRequest {
-    string apartment_id = 1;
+message DeletePropertyRequest {
+    string property_id = 1;
 }
 
-message DeleteApartmentResponse {
+message DeletePropertyResponse {
     bool success = 1;
 }
 
-message ListApartmentsRequest {
+message ListPropertiesRequest {
     int32 page = 1;
     int32 limit = 2;
 }
 
-message ListApartmentsResponse {
-    repeated Apartment apartments = 1;
+message ListPropertiesResponse {
+    repeated Property properties = 1;
 }
 
-message ShowOrganizationApartmentsRequest {
+message ShowOrganizationPropertiesRequest {
     string organization_id = 1;
 }
 
-message ShowOrganizationApartmentsResponse {
-    repeated Apartment apartments = 1;
+message ShowOrganizationPropertiesResponse {
+    repeated Property properties = 1;
 }
 
 message Organization {
     string id = 1;
     string bin = 2;
     string type = 3;
-    string name = 4;
-    Address legal_address = 5;
+    string legal_name = 4;
+    string legal_address = 5;
+    string created_at = 6;
+    string updated_at = 7;
 }
 
 message OrganizationDoc {
@@ -141,27 +153,26 @@ message OrganizationDoc {
     string uploaded_at = 5;
 }
 
-message Apartment {
+message Property {
     string id = 1;
     string organization_id = 2;
-    string apartment_name = 3;
-    string location = 4;
-    int32 price = 5;
-    string availability = 6;
-    repeated ApartmentImage apartment_images = 7;
-    repeated ApartmentCharacteristic apartment_characteristics = 8;
+    Address address = 3;
+    repeated PricingRule pricing_rules = 4;
+    repeated AvailabilitySlot availability_slots = 5;
+    repeated PropertyImage property_images = 6;
+    repeated PropertyCharacteristic property_characteristics = 7;
 }
 
-message ApartmentImage {
+message PropertyImage {
     string id = 1;
-    string apartment_id = 2;
+    string property_id = 2;
     string image_url = 3;
     int32 image_index = 4;
 }
 
-message ApartmentCharacteristic {
+message PropertyCharacteristic {
     string id = 1;
-    string apartment_id = 2;
+    string property_id = 2;
     string name = 3;
     string data_type = 4;
     google.protobuf.Any value = 5;
@@ -171,8 +182,26 @@ message Address {
     string id = 1;
     string address_name = 2;
     string type = 3;
-    string district = 4;
-    string city = 5;
-    double latitude = 6;
-    double longitude = 7;
+    string city = 4;
+    double latitude = 5;
+    double longitude = 6;
+}
+
+message PricingRule {
+    optional string id = 1;
+    optional string property_id = 2;
+    string duration_type = 3; // 'Hourly', 'Daily', 'Monthly'
+    string rule_type = 4;     // 'include', 'exclude'
+    string category = 5;      // 'Regular', 'Weekend', 'Holiday', 'Custom'
+    optional int32 price = 6;          // NULL if rule_type = 'exclude'
+    optional string from_time = 7;     // NULL if always applicable
+    optional string to_time = 8;       // NULL if always applicable
+}
+
+message AvailabilitySlot {
+    string id = 1;
+    optional string property_id = 2;
+    string start_time = 3;
+    string end_time = 4;
+    string status = 5; // 'blocked', 'reserved', 'free'
 }
