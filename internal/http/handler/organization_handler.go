@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/2group/2rent.core-service/internal/grpc"
+	auth "github.com/2group/2rent.core-service/internal/http/middleware"
 	organizationv1 "github.com/2group/2rent.core-service/pkg/gen/go/organization"
 	"github.com/2group/2rent.core-service/pkg/json"
 )
@@ -18,7 +20,13 @@ func NewOrganizationHandler(client *grpc.OrganizationClient) *OrganizationHandle
 
 func(h *OrganizationHandler) HanleCreateOrganization(w http.ResponseWriter, r *http.Request) {
     var req *organizationv1.CreateOrganizationRequest
+	user_id, ok := auth.GetUserID(r)
+	if !ok {
+		json.WriteError(w, http.StatusInternalServerError, fmt.Errorf("invalid token"))
+		return
+	}
     json.ParseJSON(r, &req)
+	req.UserId = user_id
 
     response, err := h.client.Api.CreateOrganization(r.Context(), req)
     if err != nil {
