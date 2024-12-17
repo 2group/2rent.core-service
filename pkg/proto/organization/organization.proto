@@ -34,6 +34,7 @@ message CreateOrganizationRequest {
     string type = 2;
     string legal_name = 3;
     string legal_address = 4;
+    string user_id = 5;
 }
 
 message CreateOrganizationResponse {
