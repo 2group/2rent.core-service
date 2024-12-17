@@ -44,7 +44,7 @@ message UpdateOrganizationRequest {
     string id = 1;
     string bin = 2;
     string type = 3;
-    string name = 4;
+    string legal_name = 4;
     string legal_address = 5;
 }
 
