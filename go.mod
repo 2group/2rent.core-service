@@ -5,6 +5,7 @@ go 1.23.2
 require (
 	github.com/go-chi/chi/v5 v5.1.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
+	github.com/google/uuid v1.6.0
 	github.com/ilyakaznacheev/cleanenv v1.5.0
 	google.golang.org/grpc v1.69.0
 	google.golang.org/protobuf v1.35.2
@@ -12,7 +13,6 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	golang.org/x/net v0.30.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect

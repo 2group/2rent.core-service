@@ -9,6 +9,7 @@ option go_package = "2rent.organization.v1;organizationv1";
 service OrganizationService {
     rpc CreateOrganization (CreateOrganizationRequest) returns (CreateOrganizationResponse);
     rpc UpdateOrganization (UpdateOrganizationRequest) returns (UpdateOrganizationResponse);
+    rpc DeleteOrganization (DeleteOrganizationRequest) returns (DeleteOrganizationResponse);
 
     rpc CreateProperty (CreatePropertyRequest) returns (CreatePropertyResponse);
     rpc UpdateProperty (UpdatePropertyRequest) returns (UpdatePropertyResponse);
@@ -38,6 +39,12 @@ message UpdateOrganizationRequest {
 message UpdateOrganizationResponse {
     OrganizationModel organization = 1;
 }
+
+message DeleteOrganizationRequest {
+    string id = 1;
+}
+
+message DeleteOrganizationResponse {}
 
 message CreatePropertyRequest {
     string organization_id = 1;

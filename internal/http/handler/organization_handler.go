@@ -8,6 +8,8 @@ import (
 	auth "github.com/2group/2rent.core-service/internal/http/middleware"
 	organizationv1 "github.com/2group/2rent.core-service/pkg/gen/go/organization"
 	"github.com/2group/2rent.core-service/pkg/json"
+	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 )
 
 type OrganizationHandler struct {
@@ -40,15 +42,31 @@ func (h *OrganizationHandler) HanleCreateOrganization(w http.ResponseWriter, r *
 }
 
 func (h *OrganizationHandler) HandleUpdateOrganization(w http.ResponseWriter, r *http.Request) {
-	var req *organizationv1.UpdateOrganizationRequest
-	json.ParseJSON(r, &req)
+	orgID := chi.URLParam(r, "id")
+	if orgID == "" {
+		json.WriteError(w, http.StatusBadRequest, fmt.Errorf("organization ID is required"))
+		return
+	}
 
-	response, err := h.client.Api.UpdateOrganization(r.Context(), req)
+	// Validate UUID format
+	if _, err := uuid.Parse(orgID); err != nil {
+		json.WriteError(w, http.StatusBadRequest, fmt.Errorf("invalid organization ID format"))
+		return
+	}
+
+	var req organizationv1.UpdateOrganizationRequest
+	if err := json.ParseJSON(r, &req); err != nil {
+		json.WriteError(w, http.StatusBadRequest, err)
+		return
+	}
+	req.Id = orgID // Set the ID from URL
+
+	response, err := h.client.Api.UpdateOrganization(r.Context(), &req)
 	if err != nil {
 		json.WriteError(w, http.StatusInternalServerError, err)
 		return
 	}
 
-	json.WriteJSON(w, http.StatusCreated, response)
+	json.WriteJSON(w, http.StatusOK, response)
 	return
 }
