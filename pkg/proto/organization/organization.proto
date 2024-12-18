@@ -10,23 +10,10 @@ service OrganizationService {
     rpc CreateOrganization (CreateOrganizationRequest) returns (CreateOrganizationResponse);
     rpc UpdateOrganization (UpdateOrganizationRequest) returns (UpdateOrganizationResponse);
     rpc ListOrganizations (ListOrganizationsRequest) returns (ListOrganizationsResponse);
-    rpc CreateOrganizationDoc (CreateOrganizationDocRequest) returns (CreateOrganizationDocResponse);
-    rpc ListOrganizationDocs (ListOrganizationDocsRequest) returns (ListOrganizationDocsResponse);
+
     rpc CreateProperty (CreatePropertyRequest) returns (CreatePropertyResponse);
     rpc UpdateProperty (UpdatePropertyRequest) returns (UpdatePropertyResponse);
     rpc DeleteProperty (DeletePropertyRequest) returns (DeletePropertyResponse);
-    rpc ListProperties (ListPropertiesRequest) returns (ListPropertiesResponse);
-    rpc ShowOrganizationProperties (ShowOrganizationPropertiesRequest) returns (ShowOrganizationPropertiesResponse);
-}
-
-message UpdatePropertyPricingRequest {
-    string property_id = 1;
-    repeated PricingRule pricing_rules = 2;
-    repeated AvailabilitySlot availability_slots = 3;
-}
-
-message UpdatePropertyPricingResponse {
-    bool success = 1;
 }
 
 message CreateOrganizationRequest {
@@ -34,7 +21,6 @@ message CreateOrganizationRequest {
     string type = 2;
     string legal_name = 3;
     string legal_address = 4;
-    string user_id = 5;
 }
 
 message CreateOrganizationResponse {
@@ -53,43 +39,13 @@ message UpdateOrganizationResponse {
     Organization organization = 1;
 }
 
-message ListOrganizationsRequest {
-    int32 page = 1;
-    int32 limit = 2;
-}
-
-message ListOrganizationsResponse {
-    repeated Organization organizations = 1;
-}
-
-message CreateOrganizationDocRequest {
-    string organization_id = 1;
-    string doc_type = 2;
-    string doc_url = 3;
-}
-
-message CreateOrganizationDocResponse {
-    OrganizationDoc organization_doc = 1;
-}
-
-message ListOrganizationDocsRequest {
-    string organization_id = 1;
-    int32 page = 2;
-    int32 limit = 3;
-}
-
-message ListOrganizationDocsResponse {
-    repeated OrganizationDoc organization_docs = 1;
-}
-
 message CreatePropertyRequest {
     string organization_id = 1;
     string property_name = 2;
-    string location = 3;
+    Address address  = 3;
     repeated PricingRule pricing_rules = 4;
-    string availability = 5;
-    repeated PropertyImage property_images = 6;
-    repeated PropertyCharacteristic property_characteristics = 7;
+    repeated PropertyImage property_images = 5;
+    repeated PropertyCharacteristic property_characteristics = 6;
 }
 
 message CreatePropertyResponse {
@@ -107,6 +63,15 @@ message UpdatePropertyRequest {
     repeated PropertyCharacteristic property_characteristics = 8;
 }
 
+message ListOrganizationsRequest {
+    int32 page = 1;
+    int32 limit = 2;
+}
+
+message ListOrganizationsResponse {
+    repeated Organization organizations = 1;
+}
+
 message UpdatePropertyResponse {
     Property property = 1;
 }
@@ -119,23 +84,6 @@ message DeletePropertyResponse {
     bool success = 1;
 }
 
-message ListPropertiesRequest {
-    int32 page = 1;
-    int32 limit = 2;
-}
-
-message ListPropertiesResponse {
-    repeated Property properties = 1;
-}
-
-message ShowOrganizationPropertiesRequest {
-    string organization_id = 1;
-}
-
-message ShowOrganizationPropertiesResponse {
-    repeated Property properties = 1;
-}
-
 message Organization {
     string id = 1;
     string bin = 2;
@@ -146,22 +94,38 @@ message Organization {
     string updated_at = 7;
 }
 
-message OrganizationDoc {
+message OrganizationModel {
     string id = 1;
-    string organization_id = 2;
-    string doc_type = 3;
-    string doc_url = 4;
-    string uploaded_at = 5;
+    string bin = 2;
+    string type = 3;
+    string legal_name = 4;
+    string legal_address = 5;
+    string updated_at = 6;
+    string created_at = 7;
 }
 
 message Property {
     string id = 1;
+    string description = 2;
+    float rating = 3;
+    string property_status = 4;
+    Address address = 5;
+    Organization organizaiton = 6;
+    repeated PricingRule pricing_rules = 7;
+    repeated AvailabilitySlot availability_slots = 8;
+    repeated PropertyImage property_images = 9;
+    repeated PropertyCharacteristic property_characteristics = 10;
+}
+
+message PropertyModel {
+    string id = 1;
     string organization_id = 2;
-    Address address = 3;
-    repeated PricingRule pricing_rules = 4;
-    repeated AvailabilitySlot availability_slots = 5;
-    repeated PropertyImage property_images = 6;
-    repeated PropertyCharacteristic property_characteristics = 7;
+    string address_id = 3;
+    string description = 4;
+    float rating = 5;
+    string property_status = 6;
+    string updated_at = 7;
+    string created_at = 8;
 }
 
 message PropertyImage {
@@ -180,7 +144,7 @@ message PropertyCharacteristic {
 }
 
 message Address {
-    string id = 1;
+    optional string id = 1;
     string address_name = 2;
     string type = 3;
     string city = 4;

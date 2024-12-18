@@ -19,16 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	OrganizationService_CreateOrganization_FullMethodName         = "/organization.OrganizationService/CreateOrganization"
-	OrganizationService_UpdateOrganization_FullMethodName         = "/organization.OrganizationService/UpdateOrganization"
-	OrganizationService_ListOrganizations_FullMethodName          = "/organization.OrganizationService/ListOrganizations"
-	OrganizationService_CreateOrganizationDoc_FullMethodName      = "/organization.OrganizationService/CreateOrganizationDoc"
-	OrganizationService_ListOrganizationDocs_FullMethodName       = "/organization.OrganizationService/ListOrganizationDocs"
-	OrganizationService_CreateProperty_FullMethodName             = "/organization.OrganizationService/CreateProperty"
-	OrganizationService_UpdateProperty_FullMethodName             = "/organization.OrganizationService/UpdateProperty"
-	OrganizationService_DeleteProperty_FullMethodName             = "/organization.OrganizationService/DeleteProperty"
-	OrganizationService_ListProperties_FullMethodName             = "/organization.OrganizationService/ListProperties"
-	OrganizationService_ShowOrganizationProperties_FullMethodName = "/organization.OrganizationService/ShowOrganizationProperties"
+	OrganizationService_CreateOrganization_FullMethodName = "/organization.OrganizationService/CreateOrganization"
+	OrganizationService_UpdateOrganization_FullMethodName = "/organization.OrganizationService/UpdateOrganization"
+	OrganizationService_ListOrganizations_FullMethodName  = "/organization.OrganizationService/ListOrganizations"
+	OrganizationService_CreateProperty_FullMethodName     = "/organization.OrganizationService/CreateProperty"
+	OrganizationService_UpdateProperty_FullMethodName     = "/organization.OrganizationService/UpdateProperty"
+	OrganizationService_DeleteProperty_FullMethodName     = "/organization.OrganizationService/DeleteProperty"
 )
 
 // OrganizationServiceClient is the client API for OrganizationService service.
@@ -38,13 +34,9 @@ type OrganizationServiceClient interface {
 	CreateOrganization(ctx context.Context, in *CreateOrganizationRequest, opts ...grpc.CallOption) (*CreateOrganizationResponse, error)
 	UpdateOrganization(ctx context.Context, in *UpdateOrganizationRequest, opts ...grpc.CallOption) (*UpdateOrganizationResponse, error)
 	ListOrganizations(ctx context.Context, in *ListOrganizationsRequest, opts ...grpc.CallOption) (*ListOrganizationsResponse, error)
-	CreateOrganizationDoc(ctx context.Context, in *CreateOrganizationDocRequest, opts ...grpc.CallOption) (*CreateOrganizationDocResponse, error)
-	ListOrganizationDocs(ctx context.Context, in *ListOrganizationDocsRequest, opts ...grpc.CallOption) (*ListOrganizationDocsResponse, error)
 	CreateProperty(ctx context.Context, in *CreatePropertyRequest, opts ...grpc.CallOption) (*CreatePropertyResponse, error)
 	UpdateProperty(ctx context.Context, in *UpdatePropertyRequest, opts ...grpc.CallOption) (*UpdatePropertyResponse, error)
 	DeleteProperty(ctx context.Context, in *DeletePropertyRequest, opts ...grpc.CallOption) (*DeletePropertyResponse, error)
-	ListProperties(ctx context.Context, in *ListPropertiesRequest, opts ...grpc.CallOption) (*ListPropertiesResponse, error)
-	ShowOrganizationProperties(ctx context.Context, in *ShowOrganizationPropertiesRequest, opts ...grpc.CallOption) (*ShowOrganizationPropertiesResponse, error)
 }
 
 type organizationServiceClient struct {
@@ -85,26 +77,6 @@ func (c *organizationServiceClient) ListOrganizations(ctx context.Context, in *L
 	return out, nil
 }
 
-func (c *organizationServiceClient) CreateOrganizationDoc(ctx context.Context, in *CreateOrganizationDocRequest, opts ...grpc.CallOption) (*CreateOrganizationDocResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateOrganizationDocResponse)
-	err := c.cc.Invoke(ctx, OrganizationService_CreateOrganizationDoc_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *organizationServiceClient) ListOrganizationDocs(ctx context.Context, in *ListOrganizationDocsRequest, opts ...grpc.CallOption) (*ListOrganizationDocsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListOrganizationDocsResponse)
-	err := c.cc.Invoke(ctx, OrganizationService_ListOrganizationDocs_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *organizationServiceClient) CreateProperty(ctx context.Context, in *CreatePropertyRequest, opts ...grpc.CallOption) (*CreatePropertyResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreatePropertyResponse)
@@ -135,26 +107,6 @@ func (c *organizationServiceClient) DeleteProperty(ctx context.Context, in *Dele
 	return out, nil
 }
 
-func (c *organizationServiceClient) ListProperties(ctx context.Context, in *ListPropertiesRequest, opts ...grpc.CallOption) (*ListPropertiesResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListPropertiesResponse)
-	err := c.cc.Invoke(ctx, OrganizationService_ListProperties_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *organizationServiceClient) ShowOrganizationProperties(ctx context.Context, in *ShowOrganizationPropertiesRequest, opts ...grpc.CallOption) (*ShowOrganizationPropertiesResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ShowOrganizationPropertiesResponse)
-	err := c.cc.Invoke(ctx, OrganizationService_ShowOrganizationProperties_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // OrganizationServiceServer is the server API for OrganizationService service.
 // All implementations must embed UnimplementedOrganizationServiceServer
 // for forward compatibility.
@@ -162,13 +114,9 @@ type OrganizationServiceServer interface {
 	CreateOrganization(context.Context, *CreateOrganizationRequest) (*CreateOrganizationResponse, error)
 	UpdateOrganization(context.Context, *UpdateOrganizationRequest) (*UpdateOrganizationResponse, error)
 	ListOrganizations(context.Context, *ListOrganizationsRequest) (*ListOrganizationsResponse, error)
-	CreateOrganizationDoc(context.Context, *CreateOrganizationDocRequest) (*CreateOrganizationDocResponse, error)
-	ListOrganizationDocs(context.Context, *ListOrganizationDocsRequest) (*ListOrganizationDocsResponse, error)
 	CreateProperty(context.Context, *CreatePropertyRequest) (*CreatePropertyResponse, error)
 	UpdateProperty(context.Context, *UpdatePropertyRequest) (*UpdatePropertyResponse, error)
 	DeleteProperty(context.Context, *DeletePropertyRequest) (*DeletePropertyResponse, error)
-	ListProperties(context.Context, *ListPropertiesRequest) (*ListPropertiesResponse, error)
-	ShowOrganizationProperties(context.Context, *ShowOrganizationPropertiesRequest) (*ShowOrganizationPropertiesResponse, error)
 	mustEmbedUnimplementedOrganizationServiceServer()
 }
 
@@ -188,12 +136,6 @@ func (UnimplementedOrganizationServiceServer) UpdateOrganization(context.Context
 func (UnimplementedOrganizationServiceServer) ListOrganizations(context.Context, *ListOrganizationsRequest) (*ListOrganizationsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizations not implemented")
 }
-func (UnimplementedOrganizationServiceServer) CreateOrganizationDoc(context.Context, *CreateOrganizationDocRequest) (*CreateOrganizationDocResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateOrganizationDoc not implemented")
-}
-func (UnimplementedOrganizationServiceServer) ListOrganizationDocs(context.Context, *ListOrganizationDocsRequest) (*ListOrganizationDocsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizationDocs not implemented")
-}
 func (UnimplementedOrganizationServiceServer) CreateProperty(context.Context, *CreatePropertyRequest) (*CreatePropertyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateProperty not implemented")
 }
@@ -202,12 +144,6 @@ func (UnimplementedOrganizationServiceServer) UpdateProperty(context.Context, *U
 }
 func (UnimplementedOrganizationServiceServer) DeleteProperty(context.Context, *DeletePropertyRequest) (*DeletePropertyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteProperty not implemented")
-}
-func (UnimplementedOrganizationServiceServer) ListProperties(context.Context, *ListPropertiesRequest) (*ListPropertiesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListProperties not implemented")
-}
-func (UnimplementedOrganizationServiceServer) ShowOrganizationProperties(context.Context, *ShowOrganizationPropertiesRequest) (*ShowOrganizationPropertiesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ShowOrganizationProperties not implemented")
 }
 func (UnimplementedOrganizationServiceServer) mustEmbedUnimplementedOrganizationServiceServer() {}
 func (UnimplementedOrganizationServiceServer) testEmbeddedByValue()                             {}
@@ -284,42 +220,6 @@ func _OrganizationService_ListOrganizations_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrganizationService_CreateOrganizationDoc_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateOrganizationDocRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationServiceServer).CreateOrganizationDoc(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: OrganizationService_CreateOrganizationDoc_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationServiceServer).CreateOrganizationDoc(ctx, req.(*CreateOrganizationDocRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OrganizationService_ListOrganizationDocs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListOrganizationDocsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationServiceServer).ListOrganizationDocs(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: OrganizationService_ListOrganizationDocs_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationServiceServer).ListOrganizationDocs(ctx, req.(*ListOrganizationDocsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _OrganizationService_CreateProperty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreatePropertyRequest)
 	if err := dec(in); err != nil {
@@ -374,42 +274,6 @@ func _OrganizationService_DeleteProperty_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrganizationService_ListProperties_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListPropertiesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationServiceServer).ListProperties(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: OrganizationService_ListProperties_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationServiceServer).ListProperties(ctx, req.(*ListPropertiesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OrganizationService_ShowOrganizationProperties_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ShowOrganizationPropertiesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrganizationServiceServer).ShowOrganizationProperties(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: OrganizationService_ShowOrganizationProperties_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrganizationServiceServer).ShowOrganizationProperties(ctx, req.(*ShowOrganizationPropertiesRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // OrganizationService_ServiceDesc is the grpc.ServiceDesc for OrganizationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -430,14 +294,6 @@ var OrganizationService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _OrganizationService_ListOrganizations_Handler,
 		},
 		{
-			MethodName: "CreateOrganizationDoc",
-			Handler:    _OrganizationService_CreateOrganizationDoc_Handler,
-		},
-		{
-			MethodName: "ListOrganizationDocs",
-			Handler:    _OrganizationService_ListOrganizationDocs_Handler,
-		},
-		{
 			MethodName: "CreateProperty",
 			Handler:    _OrganizationService_CreateProperty_Handler,
 		},
@@ -448,14 +304,6 @@ var OrganizationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteProperty",
 			Handler:    _OrganizationService_DeleteProperty_Handler,
-		},
-		{
-			MethodName: "ListProperties",
-			Handler:    _OrganizationService_ListProperties_Handler,
-		},
-		{
-			MethodName: "ShowOrganizationProperties",
-			Handler:    _OrganizationService_ShowOrganizationProperties_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
