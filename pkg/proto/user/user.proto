@@ -8,8 +8,8 @@ service UserService {
     rpc Login (LoginRequest) returns (LoginResponse);
     rpc Register (RegisterRequest) returns (RegisterResponse);
     rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+    rpc PatchUser (PatchUserRequest) returns (PatchUserResponse);
     rpc GetUser (GetUserRequest) returns (GetUserResponse);
-    rpc ListUsers (ListUsersRequest) returns (ListUsersResponse);
     rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);
 }
 
@@ -20,7 +20,7 @@ message LoginRequest {
 
 message LoginResponse {
     string token = 1;
-    User user = 2;
+    UserModel user = 2;
 }
 
 message RegisterRequest {
@@ -32,7 +32,7 @@ message RegisterRequest {
 
 message RegisterResponse {
     string token = 1;
-    User user = 2;
+    UserModel user = 2;
 }
 
 message UpdateUserRequest {
@@ -44,11 +44,29 @@ message UpdateUserRequest {
     optional string phone_number = 6;
     optional string avatar_url = 7;
     optional string organization_id = 8;
-    optional bool verified = 9;
+    string role = 9;
+    bool verified = 10;
 }
 
 message UpdateUserResponse {
-    User user = 1;
+    UserModel user = 1;
+}
+
+message PatchUserRequest {
+    string user_id = 1;
+    optional string uin = 2;
+    optional string email = 3;
+    optional string first_name = 4;
+    optional string last_name = 5;
+    optional string phone_number = 6;
+    optional string avatar_url = 7;
+    optional string organization_id = 8;
+    optional string role = 9;
+    optional bool verified = 10;
+}
+
+message PatchUserResponse {
+    UserModel user = 1;
 }
 
 message GetUserRequest {
@@ -56,16 +74,7 @@ message GetUserRequest {
 }
 
 message GetUserResponse {
-    User user = 1;
-}
-
-message ListUsersRequest {
-    int32 page = 1;
-    int32 limit = 2;
-}
-
-message ListUsersResponse {
-    repeated User users = 1;
+    UserModel user = 1;
 }
 
 message DeleteUserRequest {
@@ -76,7 +85,7 @@ message DeleteUserResponse {
     bool success = 1;
 }
 
-message User {
+message UserModel {
     string id = 1;
     optional string uin = 2;
     optional string email = 3;

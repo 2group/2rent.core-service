@@ -9,6 +9,7 @@ option go_package = "2rent.organization.v1;organizationv1";
 service OrganizationService {
     rpc CreateOrganization (CreateOrganizationRequest) returns (CreateOrganizationResponse);
     rpc UpdateOrganization (UpdateOrganizationRequest) returns (UpdateOrganizationResponse);
+    rpc PatchOrganization (PatchOrganizationRequest) returns (PatchOrganizationResponse); // New method for partial updates
     rpc DeleteOrganization (DeleteOrganizationRequest) returns (DeleteOrganizationResponse);
     rpc GetOrganizationById (GetOrganizationByIdRequest) returns (GetOrganizationByIdResponse);
 
@@ -31,13 +32,25 @@ message CreateOrganizationResponse {
 
 message UpdateOrganizationRequest {
     string id = 1;
-    string bin = 2;
-    string type = 3;
-    string legal_name = 4;
-    string legal_address = 5;
+    optional string bin = 2;
+    optional string type = 3;
+    optional string legal_name = 4;
+    optional string legal_address = 5;
 }
 
 message UpdateOrganizationResponse {
+    OrganizationModel organization = 1;
+}
+
+message PatchOrganizationRequest {
+    string id = 1;
+    optional string bin = 2;
+    optional string type = 3;
+    optional string legal_name = 4;
+    optional string legal_address = 5;
+}
+
+message PatchOrganizationResponse {
     OrganizationModel organization = 1;
 }
 
@@ -55,10 +68,21 @@ message GetOrganizationByIdResponse {
     OrganizationModel organization = 1;
 }
 
+message OrganizationModel {
+    optional string id = 1;
+    string bin = 2;
+    string type = 3;
+    string legal_name = 4;
+    string legal_address = 5;
+    optional string updated_at = 6;
+    optional string created_at = 7;
+}
+
+// Property-related messages
 message CreatePropertyRequest {
     string organization_id = 1;
     string property_name = 2;
-    Address address  = 3;
+    Address address = 3;
     repeated PricingRule pricing_rules = 4;
     repeated PropertyImage property_images = 5;
     repeated PropertyCharacteristic property_characteristics = 6;
@@ -91,39 +115,6 @@ message DeletePropertyResponse {
     bool success = 1;
 }
 
-message Organization {
-    string id = 1;
-    string bin = 2;
-    string type = 3;
-    string legal_name = 4;
-    string legal_address = 5;
-    string created_at = 6;
-    string updated_at = 7;
-}
-
-message OrganizationModel {
-    optional string id = 1;
-    string bin = 2;
-    string type = 3;
-    string legal_name = 4;
-    string legal_address = 5;
-    optional string updated_at = 6;
-    optional string created_at = 7;
-}
-
-message Property {
-    string id = 1;
-    string description = 2;
-    float rating = 3;
-    string property_status = 4;
-    Address address = 5;
-    Organization organizaiton = 6;
-    repeated PricingRule pricing_rules = 7;
-    repeated AvailabilitySlot availability_slots = 8;
-    repeated PropertyImage property_images = 9;
-    repeated PropertyCharacteristic property_characteristics = 10;
-}
-
 message PropertyModel {
     string id = 1;
     string organization_id = 2;
@@ -133,21 +124,6 @@ message PropertyModel {
     string property_status = 6;
     string updated_at = 7;
     string created_at = 8;
-}
-
-message PropertyImage {
-    string id = 1;
-    string property_id = 2;
-    string image_url = 3;
-    int32 image_index = 4;
-}
-
-message PropertyCharacteristic {
-    string id = 1;
-    string property_id = 2;
-    string name = 3;
-    string data_type = 4;
-    google.protobuf.Any value = 5;
 }
 
 message Address {
@@ -167,15 +143,22 @@ message PricingRule {
     string duration_type = 3; // 'Hourly', 'Daily', 'Monthly'
     string rule_type = 4;     // 'include', 'exclude'
     string category = 5;      // 'Regular', 'Weekend', 'Holiday', 'Custom'
-    optional int32 price = 6;          // NULL if rule_type = 'exclude'
-    optional string from_time = 7;     // NULL if always applicable
-    optional string to_time = 8;       // NULL if always applicable
+    optional int32 price = 6; // NULL if rule_type = 'exclude'
+    optional string from_time = 7; // NULL if always applicable
+    optional string to_time = 8;   // NULL if always applicable
 }
 
-message AvailabilitySlot {
+message PropertyImage {
     string id = 1;
-    optional string property_id = 2;
-    string start_time = 3;
-    string end_time = 4;
-    string status = 5; // 'blocked', 'reserved', 'free'
+    string property_id = 2;
+    string image_url = 3;
+    int32 image_index = 4;
+}
+
+message PropertyCharacteristic {
+    string id = 1;
+    string property_id = 2;
+    string name = 3;
+    string data_type = 4;
+    google.protobuf.Any value = 5;
 }
