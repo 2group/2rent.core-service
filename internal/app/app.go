@@ -35,13 +35,13 @@ func (s *APIServer) Run() error {
 		panic(err)
 	}
 
-    organizationClient, err := grpc.NewOrganizationClient(context, s.cfg.GRPC.Organization, time.Hour*2, 2)
+	organizationClient, err := grpc.NewOrganizationClient(context, s.cfg.GRPC.Organization, time.Hour*2, 2)
 	if err != nil {
 		panic(err)
 	}
 
 	userHandler := handler.NewUserHandler(userClient)
-    organizationHandler := handler.NewOrganizationHandler(organizationClient)
+	organizationHandler := handler.NewOrganizationHandler(organizationClient)
 
 	router.Route("/api/v1", func(router chi.Router) {
 		router.Route("/user", func(router chi.Router) {
@@ -53,12 +53,12 @@ func (s *APIServer) Run() error {
 				authenticatedRouter.Put("/profile", userHandler.HandleUpdateProfile)
 			})
 		})
-        router.Route("/organization", func(router chi.Router) {
+		router.Route("/organization", func(router chi.Router) {
 			router.Group(func(authenticatedRouter chi.Router) {
 				authenticatedRouter.Use(auth.AuthMiddleware)
 				authenticatedRouter.Post("/", organizationHandler.HanleCreateOrganization)
 				authenticatedRouter.Put("/", organizationHandler.HandleUpdateOrganization)
-				authenticatedRouter.Get("/", organizationHandler.HandleListOgranizations)
+
 			})
 		})
 	})
