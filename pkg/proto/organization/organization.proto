@@ -9,7 +9,6 @@ option go_package = "2rent.organization.v1;organizationv1";
 service OrganizationService {
     rpc CreateOrganization (CreateOrganizationRequest) returns (CreateOrganizationResponse);
     rpc UpdateOrganization (UpdateOrganizationRequest) returns (UpdateOrganizationResponse);
-    rpc ListOrganizations (ListOrganizationsRequest) returns (ListOrganizationsResponse);
 
     rpc CreateProperty (CreatePropertyRequest) returns (CreatePropertyResponse);
     rpc UpdateProperty (UpdatePropertyRequest) returns (UpdatePropertyResponse);
@@ -25,7 +24,7 @@ message CreateOrganizationRequest {
 }
 
 message CreateOrganizationResponse {
-    Organization organization = 1;
+    OrganizationModel organization = 1;
 }
 
 message UpdateOrganizationRequest {
@@ -37,7 +36,7 @@ message UpdateOrganizationRequest {
 }
 
 message UpdateOrganizationResponse {
-    Organization organization = 1;
+    OrganizationModel organization = 1;
 }
 
 message CreatePropertyRequest {
@@ -50,7 +49,7 @@ message CreatePropertyRequest {
 }
 
 message CreatePropertyResponse {
-    Property property = 1;
+    PropertyModel property = 1;
 }
 
 message UpdatePropertyRequest {
@@ -64,17 +63,8 @@ message UpdatePropertyRequest {
     repeated PropertyCharacteristic property_characteristics = 8;
 }
 
-message ListOrganizationsRequest {
-    int32 page = 1;
-    int32 limit = 2;
-}
-
-message ListOrganizationsResponse {
-    repeated Organization organizations = 1;
-}
-
 message UpdatePropertyResponse {
-    Property property = 1;
+    PropertyModel property = 1;
 }
 
 message DeletePropertyRequest {
@@ -96,13 +86,13 @@ message Organization {
 }
 
 message OrganizationModel {
-    string id = 1;
+    optional string id = 1;
     string bin = 2;
     string type = 3;
     string legal_name = 4;
     string legal_address = 5;
-    string updated_at = 6;
-    string created_at = 7;
+    optional string updated_at = 6;
+    optional string created_at = 7;
 }
 
 message Property {
