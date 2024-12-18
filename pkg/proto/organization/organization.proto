@@ -10,6 +10,7 @@ service OrganizationService {
     rpc CreateOrganization (CreateOrganizationRequest) returns (CreateOrganizationResponse);
     rpc UpdateOrganization (UpdateOrganizationRequest) returns (UpdateOrganizationResponse);
     rpc DeleteOrganization (DeleteOrganizationRequest) returns (DeleteOrganizationResponse);
+    rpc GetOrganizationById (GetOrganizationByIdRequest) returns (GetOrganizationByIdResponse);
 
     rpc CreateProperty (CreatePropertyRequest) returns (CreatePropertyResponse);
     rpc UpdateProperty (UpdatePropertyRequest) returns (UpdatePropertyResponse);
@@ -45,6 +46,14 @@ message DeleteOrganizationRequest {
 }
 
 message DeleteOrganizationResponse {}
+
+message GetOrganizationByIdRequest {
+    string id = 1;
+}
+
+message GetOrganizationByIdResponse {
+    Organization organization = 1;
+}
 
 message CreatePropertyRequest {
     string organization_id = 1;
