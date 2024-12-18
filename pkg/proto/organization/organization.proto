@@ -52,7 +52,7 @@ message GetOrganizationByIdRequest {
 }
 
 message GetOrganizationByIdResponse {
-    Organization organization = 1;
+    OrganizationModel organization = 1;
 }
 
 message CreatePropertyRequest {
