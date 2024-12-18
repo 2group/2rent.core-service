@@ -141,6 +141,8 @@ message Address {
     string city = 4;
     double latitude = 5;
     double longitude = 6;
+    string updated_at = 7;
+    string created_at = 8;
 }
 
 message PricingRule {
