@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/2group/2rent.core-service/internal/dto"
@@ -80,6 +81,9 @@ func (h *UserHandler) HandleGetProfile(w http.ResponseWriter, r *http.Request) {
 		json.WriteError(w, http.StatusInternalServerError, fmt.Errorf("failed to fetch user profile: %w", err))
 		return
 	}
+
+	log.Println("response", response)
+	log.Println("user", response.User)
 
 	userDTO := dto.MapUserToDTO(response.User)
 	json.WriteJSON(w, http.StatusOK, map[string]*dto.UserDTO{"user": userDTO})

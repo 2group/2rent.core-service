@@ -13,7 +13,7 @@ type UserDTO struct {
 	LastName     *string `json:"last_name"`
 	AvatarURL    *string `json:"avatar_url"`
 	Verified     bool    `json:"verified"`
-	Role         *string `json:"role"`
+	Role         string  `json:"role"`
 	Organization *string `json:"organization_id"`
 	CreatedAt    *string `json:"created_at"`
 	UpdatedAt    *string `json:"updated_at"`
@@ -22,6 +22,7 @@ type UserDTO struct {
 func MapUserToDTO(user *userv1.UserModel) *UserDTO {
 	return &UserDTO{
 		ID:           user.Id,
+		UIN:          user.Uin,
 		Email:        user.Email,
 		PhoneNumber:  user.PhoneNumber,
 		FirstName:    user.FirstName,
