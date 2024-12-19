@@ -19,7 +19,7 @@ type UserDTO struct {
 	UpdatedAt    *string `json:"updated_at"`
 }
 
-func MapUserToDTO(user *userv1.User) *UserDTO {
+func MapUserToDTO(user *userv1.UserModel) *UserDTO {
 	return &UserDTO{
 		ID:           user.Id,
 		Email:        user.Email,

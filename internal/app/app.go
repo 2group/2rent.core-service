@@ -43,21 +43,41 @@ func (s *APIServer) Run() error {
 	userHandler := handler.NewUserHandler(userClient)
 	organizationHandler := handler.NewOrganizationHandler(organizationClient)
 
-	router.Route("/api/v1", func(router chi.Router) {
-		router.Route("/user", func(router chi.Router) {
-			router.Post("/login", userHandler.HandleLogin)
-			router.Post("/register", userHandler.HandleRegister)
-			router.Group(func(authenticatedRouter chi.Router) {
-				authenticatedRouter.Use(auth.AuthMiddleware)
-				authenticatedRouter.Get("/profile", userHandler.HandleGetProfile)
-				authenticatedRouter.Put("/profile", userHandler.HandleUpdateProfile)
+	router.Route("/api/v1", func(apiRouter chi.Router) {
+		// User Routes
+		apiRouter.Route("/user", func(userRouter chi.Router) {
+			// Authentication and registration
+			userRouter.Post("/login", userHandler.HandleLogin)
+			userRouter.Post("/register", userHandler.HandleRegister)
+
+			// Authenticated user operations
+			userRouter.Group(func(authRouter chi.Router) {
+				authRouter.Use(auth.AuthMiddleware)
+				authRouter.Get("/profile", userHandler.HandleGetProfile)       // Get the authenticated user's profile
+				authRouter.Put("/profile", userHandler.HandleUpdateProfile)    // Full update for authenticated user's profile
+				authRouter.Patch("/profile", userHandler.HandlePatchProfile)   // Partial update for authenticated user's profile
+				authRouter.Delete("/profile", userHandler.HandleDeleteProfile) // Delete the authenticated user's account
+			})
+
+			// General user management (admin actions)
+			userRouter.Group(func(adminRouter chi.Router) {
+				adminRouter.Use(auth.AuthMiddleware)                               // Middleware to ensure admin privileges
+				adminRouter.Get("/{user_id}", userHandler.HandleGetUserByID)       // Get a specific user by ID
+				adminRouter.Put("/{user_id}", userHandler.HandleUpdateUserByID)    // Full update for a specific user
+				adminRouter.Patch("/{user_id}", userHandler.HandlePatchUserByID)   // Partial update for a specific user
+				adminRouter.Delete("/{user_id}", userHandler.HandleDeleteUserByID) // Delete a specific user
 			})
 		})
-		router.Route("/organization", func(router chi.Router) {
-			router.Group(func(authenticatedRouter chi.Router) {
-				authenticatedRouter.Use(auth.AuthMiddleware)
-				authenticatedRouter.Post("/", organizationHandler.HanleCreateOrganization)
-				authenticatedRouter.Put("/{id}", organizationHandler.HandleUpdateOrganization)
+
+		// Organization Routes
+		apiRouter.Route("/organization", func(orgRouter chi.Router) {
+			orgRouter.Group(func(authRouter chi.Router) {
+				authRouter.Use(auth.AuthMiddleware)
+				authRouter.Post("/", organizationHandler.HandleCreateOrganization)           // Create an organization
+				authRouter.Get("/{id}", organizationHandler.HandleGetOrganizationByID)       // Get organization by ID
+				authRouter.Put("/{id}", organizationHandler.HandleUpdateOrganizationByID)    // Full update for organization
+				authRouter.Patch("/{id}", organizationHandler.HandlePatchOrganizationByID)   // Partial update for organization
+				authRouter.Delete("/{id}", organizationHandler.HandleDeleteOrganizationByID) // Delete an organization
 			})
 		})
 	})
