@@ -29,7 +29,7 @@ func MapUserToDTO(user *userv1.UserModel) *UserDTO {
 		LastName:     user.LastName,
 		AvatarURL:    user.AvatarUrl,
 		Verified:     user.Verified,
-		Role:         user.Role,
+		Role:         user.Role.String(),
 		Organization: user.OrganizationId,
 		CreatedAt:    user.CreatedAt,
 		UpdatedAt:    user.UpdatedAt,
